@@ -1,0 +1,5 @@
+pymongo >= 4.8.0
+
+# Development dependencies
+pytest>=8.2.2
+pytest-asyncio>=0.23.7

@@ -18,7 +18,7 @@ setup(
     author="Ryan Zheng",
     author_email="ryan.zheng.work@gmail.com",
     description="A small library to simplify MongoDB usage with repository pattern",
-    long_description=open("README.md").read(),
+    long_description=open("README.MD").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ryan-zheng-teki/repository_mongodb",
     classifiers=[

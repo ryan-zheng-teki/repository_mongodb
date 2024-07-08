@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="repository_mongodb",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(where="repository_mongodb"),
     package_dir={"": "repository_mongodb"},
     install_requires=[
@@ -14,7 +14,7 @@ setup(
             "pytest-asyncio>=0.21.0",
         ],
     },
-    python_requires=">=3.10",
+    python_requires=">=3.8",
     author="Ryan Zheng",
     author_email="ryan.zheng.work@gmail.com",
     description="A small library to simplify MongoDB usage with repository pattern",

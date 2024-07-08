@@ -26,7 +26,7 @@ def setup_mongo_env(monkeypatch):
     monkeypatch.setenv('MONGO_PASSWORD', '')
     monkeypatch.setenv('MONGO_DATABASE', 'test_database')
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def clean_mongo_data(mongo_database):
     yield
     mongo_database.drop_collection("test_collection")

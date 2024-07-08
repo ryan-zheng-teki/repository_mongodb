@@ -29,4 +29,6 @@ def setup_mongo_env(monkeypatch):
 @pytest.fixture(scope="function", autouse=True)
 def clean_mongo_data(mongo_database):
     yield
-    mongo_database.drop_collection("test_collection")
+    
+    collection = mongo_database["test_collection"]
+    collection.drop()

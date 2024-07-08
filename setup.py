@@ -2,9 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="repository_mongodb",
-    version="0.1.2",
-    packages=find_packages(where="repository_mongodb"),
-    package_dir={"": "repository_mongodb"},
+    version="0.1.3",
+    packages=find_packages(),
     install_requires=[
         "pymongo>=4.8.0",
     ],

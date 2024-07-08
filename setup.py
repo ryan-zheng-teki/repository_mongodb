@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="repository_mongodb",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(where="repository_mongodb"),
     package_dir={"": "repository_mongodb"},
     install_requires=[

@@ -14,6 +14,8 @@ class TestRepository(BaseRepository[TestModel]):
 @pytest.fixture
 def repository():
     return TestRepository()
+
+def test_create(repository):
     obj = TestModel(name="John Doe", age=25, email="john@example.com")
     created_obj = repository.create(obj)
     assert created_obj._id is not None
@@ -40,6 +42,36 @@ def test_find_all(repository):
     assert {obj.name for obj in all_objs} == {"Alice", "Bob"}
     assert {obj.age for obj in all_objs} == {35, 40}
     assert {obj.email for obj in all_objs} == {"alice@example.com", "bob@example.com"}
+
+def test_find_by_single_attribute(repository):
+    obj1 = TestModel(name="Alice", age=35, email="alice@example.com")
+    obj2 = TestModel(name="Bob", age=40, email="bob@example.com")
+    repository.create(obj1)
+    repository.create(obj2)
+    found_objs = repository.find_by_attributes({"name": "Alice"})
+    assert len(found_objs) == 1
+    assert found_objs[0].name == "Alice"
+    assert found_objs[0].age == 35
+    assert found_objs[0].email == "alice@example.com"
+
+def test_find_by_multiple_attributes(repository):
+    obj1 = TestModel(name="Alice", age=35, email="alice@example.com")
+    obj2 = TestModel(name="Bob", age=40, email="bob@example.com")
+    repository.create(obj1)
+    repository.create(obj2)
+    found_objs = repository.find_by_attributes({"name": "Bob", "age": 40})
+    assert len(found_objs) == 1
+    assert found_objs[0].name == "Bob"
+    assert found_objs[0].age == 40
+    assert found_objs[0].email == "bob@example.com"
+
+def test_find_by_attributes_no_match(repository):
+    obj1 = TestModel(name="Alice", age=35, email="alice@example.com")
+    obj2 = TestModel(name="Bob", age=40, email="bob@example.com")
+    repository.create(obj1)
+    repository.create(obj2)
+    found_objs = repository.find_by_attributes({"name": "Charlie"})
+    assert len(found_objs) == 0
 
 def test_update(repository):
     obj = TestModel(name="Charlie", age=45, email="charlie@example.com")

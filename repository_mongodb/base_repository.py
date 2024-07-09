@@ -41,6 +41,16 @@ class BaseRepository(Generic[ModelType], metaclass=RepositoryMetaclass):
     def find_all(self) -> List[ModelType]:
         return [self.model(**data) for data in self.collection.find()]
 
+    def find_by_attributes(self, attributes: Dict[str, Any]) -> List[ModelType]:
+        """
+        Find models by specified attributes.
+        
+        :param attributes: A dictionary of attribute-value pairs to search for.
+        :return: A list of matching models.
+        """
+        matching_data = self.collection.find(attributes)
+        return [self.model(**data) for data in matching_data]
+
     def update(self, obj: ModelType) -> ModelType:
         self.collection.replace_one({"_id": obj._id}, obj.__dict__)
         return obj

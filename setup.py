@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="repository_mongodb",
-    version="0.1.4",
+    version="0.1.6",
     packages=find_packages(),
     install_requires=[
         "pymongo>=4.8.0",
@@ -17,7 +17,7 @@ setup(
     author="Ryan Zheng",
     author_email="ryan.zheng.work@gmail.com",
     description="A small library to simplify MongoDB usage with repository pattern",
-    long_description=open("README.MD").read(),
+    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ryan-zheng-teki/repository_mongodb",
     classifiers=[

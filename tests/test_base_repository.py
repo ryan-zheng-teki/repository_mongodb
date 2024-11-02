@@ -1,6 +1,7 @@
 import pytest
 from repository_mongodb.base_repository import BaseRepository
 from repository_mongodb.base_model import BaseModel
+from repository_mongodb.transaction_management import transaction
 
 class TestModel(BaseModel):
     __collection_name__ = "test_collection"
@@ -10,6 +11,11 @@ class TestModel(BaseModel):
 
 class TestRepository(BaseRepository[TestModel]):
     pass
+
+@pytest.fixture(autouse=True, scope="function")
+def cleanup_collection(mongo_database):
+    yield 
+    mongo_database[TestModel.__collection_name__].drop()
 
 @pytest.fixture
 def repository():
@@ -90,3 +96,25 @@ def test_delete(repository):
     repository.delete(created_obj)
     deleted_obj = repository.find_by_id(created_obj._id)
     assert deleted_obj is None
+
+def test_update_transaction_commit(repository):
+    obj = TestModel(name="Eve", age=28, email="eve@example.com")
+    created_obj = repository.create(obj)
+    with transaction() as session:
+        created_obj.name = "Eve Updated"
+        repository.update(created_obj, session=session)
+    found_obj = repository.find_by_id(created_obj._id)
+    assert found_obj.name == "Eve Updated"
+
+def test_update_transaction_rollback(repository):
+    obj = TestModel(name="Frank", age=32, email="frank@example.com")
+    created_obj = repository.create(obj)
+    try:
+        with transaction() as session:
+            created_obj.name = "Frank Updated"
+            repository.update(created_obj, session=session)
+            raise Exception("Simulated failure")
+    except:
+        pass
+    found_obj = repository.find_by_id(created_obj._id)
+    assert found_obj.name == "Frank"  # Update should have been rolled back

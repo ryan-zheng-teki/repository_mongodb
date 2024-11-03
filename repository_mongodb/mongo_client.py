@@ -1,14 +1,17 @@
 import logging
+from contextvars import ContextVar
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from repository_mongodb.mongo_config import MongoConfig
 
 # Set up logging
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 _mongo_client = None
 _mongo_database = None
+
+# Add context variable for session
+session_context_var: ContextVar[any] = ContextVar("mongo_session", default=None)
 
 def get_mongo_client():
     global _mongo_client

@@ -21,6 +21,17 @@ def cleanup_collection(mongo_database):
 def repository():
     return TestRepository()
 
+def test_singleton_behavior():
+    # Create multiple instances
+    repo1 = TestRepository()
+    repo2 = TestRepository()
+    repo3 = TestRepository()
+    
+    # Verify they are the same instance
+    assert repo1 is repo2
+    assert repo2 is repo3
+    assert repo1 is repo3
+
 def test_create(repository):
     obj = TestModel(name="John Doe", age=25, email="john@example.com")
     created_obj = repository.create(obj)

@@ -2,6 +2,8 @@ from functools import wraps
 from typing import Any, Callable, Dict, Type, Tuple
 import threading
 
+from repository_mongodb.transaction_management import transactional
+
 class SingletonMeta(type):
     """
     Thread-safe implementation of the Singleton pattern using metaclass.
@@ -24,7 +26,9 @@ class TransactionalMetaclass(type):
     def __new__(cls, name: str, bases: tuple, attrs: Dict[str, Any]) -> Type:
         transactional_prefixes = (
             "find",
+            "get",
             "create",
+            "add",
             "update",
             "delete",
             "find_by",
